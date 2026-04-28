@@ -2,6 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { ShoppingBag } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useCart } from "@/lib/cart-store";
+import logo from "@/assets/logo.jpg";
 
 const links = [
   { to: "/", label: "Shop" },
@@ -22,8 +23,22 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-        <Link to="/" className="font-display text-2xl tracking-tight text-primary">
-          Maison <span className="text-accent">Cremisi</span>
+        <Link to="/" className="flex items-center gap-3">
+          <img
+            src={logo}
+            alt="አቡቀለምሲስ logo"
+            width={44}
+            height={44}
+            className="h-11 w-11 rounded-full object-contain"
+          />
+          <span className="flex flex-col leading-tight">
+            <span className="font-display text-xl tracking-tight text-primary">
+              አቡቀለምሲስ
+            </span>
+            <span className="hidden text-[10px] uppercase tracking-[0.25em] text-muted-foreground sm:block">
+              Abukelemsis
+            </span>
+          </span>
         </Link>
 
         <nav className="hidden items-center gap-10 md:flex">

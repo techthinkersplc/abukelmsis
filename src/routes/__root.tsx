@@ -32,14 +32,14 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Maison Cremisi — Quietly crafted objects" },
+      { title: "አቡቀለምሲስ · Abukelemsis — Books & Creative Gifts" },
       {
         name: "description",
         content:
-          "Maison Cremisi designs leather goods, silk, timepieces and fragrance in small editions.",
+          "አቡቀለምሲስ — a curated shop of books and meaningful, spiritual gifts.",
       },
-      { property: "og:title", content: "Maison Cremisi" },
-      { property: "og:description", content: "Quietly crafted objects for a considered life." },
+      { property: "og:title", content: "አቡቀለምሲስ · Abukelemsis" },
+      { property: "og:description", content: "Books and creative gifts, curated with care." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

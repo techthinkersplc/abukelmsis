@@ -3,9 +3,13 @@ export function SiteFooter() {
     <footer className="mt-32 border-t border-border/60 bg-primary text-primary-foreground">
       <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 md:grid-cols-3">
         <div>
-          <h3 className="font-display text-2xl">Maison Cremisi</h3>
+          <h3 className="font-display text-2xl">አቡቀለምሲስ</h3>
+          <p className="mt-1 text-xs uppercase tracking-[0.25em] opacity-70">
+            Abukelemsis
+          </p>
           <p className="mt-3 max-w-xs text-sm opacity-80">
-            Quietly crafted objects for a considered life. Made in small editions.
+            የመጻሕፍት እና የመንፈሳዊ ሥጦታዎች ጥቅል — books and creative spiritual gifts,
+            curated with care.
           </p>
         </div>
         <div className="text-sm">
@@ -26,7 +30,7 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="border-t border-primary-foreground/10 px-6 py-6 text-center text-xs opacity-70">
-        © {new Date().getFullYear()} Maison Cremisi. All rights reserved.
+        © {new Date().getFullYear()} አቡቀለምሲስ · Abukelemsis. All rights reserved.
       </div>
     </footer>
   );
