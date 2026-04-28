@@ -11,12 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CartRouteImport } from './routes/cart'
-import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CheckoutSuccessRouteImport } from './routes/checkout.success'
-import { Route as ApiPublicContactRouteImport } from './routes/api.public.contact'
-import { Route as ApiPublicWebhookPaymentRouteImport } from './routes/api.public.webhook.payment'
 
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
@@ -26,11 +23,6 @@ const ContactRoute = ContactRouteImport.update({
 const CartRoute = CartRouteImport.update({
   id: '/cart',
   path: '/cart',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -48,90 +40,43 @@ const CheckoutSuccessRoute = CheckoutSuccessRouteImport.update({
   path: '/checkout/success',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicContactRoute = ApiPublicContactRouteImport.update({
-  id: '/api/public/contact',
-  path: '/api/public/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicWebhookPaymentRoute = ApiPublicWebhookPaymentRouteImport.update({
-  id: '/api/public/webhook/payment',
-  path: '/api/public/webhook/payment',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
   '/contact': typeof ContactRoute
   '/checkout/success': typeof CheckoutSuccessRoute
-  '/api/public/contact': typeof ApiPublicContactRoute
-  '/api/public/webhook/payment': typeof ApiPublicWebhookPaymentRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
   '/contact': typeof ContactRoute
   '/checkout/success': typeof CheckoutSuccessRoute
-  '/api/public/contact': typeof ApiPublicContactRoute
-  '/api/public/webhook/payment': typeof ApiPublicWebhookPaymentRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
   '/contact': typeof ContactRoute
   '/checkout/success': typeof CheckoutSuccessRoute
-  '/api/public/contact': typeof ApiPublicContactRoute
-  '/api/public/webhook/payment': typeof ApiPublicWebhookPaymentRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/about'
-    | '/auth'
-    | '/cart'
-    | '/contact'
-    | '/checkout/success'
-    | '/api/public/contact'
-    | '/api/public/webhook/payment'
+  fullPaths: '/' | '/about' | '/cart' | '/contact' | '/checkout/success'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/about'
-    | '/auth'
-    | '/cart'
-    | '/contact'
-    | '/checkout/success'
-    | '/api/public/contact'
-    | '/api/public/webhook/payment'
-  id:
-    | '__root__'
-    | '/'
-    | '/about'
-    | '/auth'
-    | '/cart'
-    | '/contact'
-    | '/checkout/success'
-    | '/api/public/contact'
-    | '/api/public/webhook/payment'
+  to: '/' | '/about' | '/cart' | '/contact' | '/checkout/success'
+  id: '__root__' | '/' | '/about' | '/cart' | '/contact' | '/checkout/success'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  AuthRoute: typeof AuthRoute
   CartRoute: typeof CartRoute
   ContactRoute: typeof ContactRoute
   CheckoutSuccessRoute: typeof CheckoutSuccessRoute
-  ApiPublicContactRoute: typeof ApiPublicContactRoute
-  ApiPublicWebhookPaymentRoute: typeof ApiPublicWebhookPaymentRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -148,13 +93,6 @@ declare module '@tanstack/react-router' {
       path: '/cart'
       fullPath: '/cart'
       preLoaderRoute: typeof CartRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -178,32 +116,15 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CheckoutSuccessRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/contact': {
-      id: '/api/public/contact'
-      path: '/api/public/contact'
-      fullPath: '/api/public/contact'
-      preLoaderRoute: typeof ApiPublicContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/webhook/payment': {
-      id: '/api/public/webhook/payment'
-      path: '/api/public/webhook/payment'
-      fullPath: '/api/public/webhook/payment'
-      preLoaderRoute: typeof ApiPublicWebhookPaymentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  AuthRoute: AuthRoute,
   CartRoute: CartRoute,
   ContactRoute: ContactRoute,
   CheckoutSuccessRoute: CheckoutSuccessRoute,
-  ApiPublicContactRoute: ApiPublicContactRoute,
-  ApiPublicWebhookPaymentRoute: ApiPublicWebhookPaymentRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -4,13 +4,11 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useCart } from "@/lib/cart-store";
 import { formatPrice } from "@/lib/products";
-import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/lib/auth-store";
 
 export const Route = createFileRoute("/cart")({
   head: () => ({
     meta: [
-      { title: "Your bag — አቡቀለምሲስ" },
+      { title: "Your bag — Maison Cremisi" },
       { name: "description", content: "Review your selection and proceed to checkout." },
     ],
   }),
@@ -25,66 +23,17 @@ function CartPage() {
   const setQuantity = useCart((s) => s.setQuantity);
   const remove = useCart((s) => s.remove);
   const clear = useCart((s) => s.clear);
-  const user = useAuth((s) => s.user);
   const [processing, setProcessing] = useState(false);
 
   useEffect(() => setHydrated(true), []);
 
   const onCheckout = async () => {
-    if (!user) {
-      toast.error("Please sign in to check out");
-      navigate({ to: "/auth", search: { redirect: "/cart" } as never });
-      return;
-    }
     setProcessing(true);
-    try {
-      // 1. Create pending order (POST /checkout)
-      const { data: order, error: orderErr } = await supabase
-        .from("orders")
-        .insert({
-          user_id: user.id,
-          email: user.email!,
-          subtotal_cents: subtotal,
-          status: "pending",
-        })
-        .select()
-        .single();
-      if (orderErr) throw orderErr;
-
-      const lineItems = items.map((i) => ({
-        order_id: order.id,
-        product_id: i.id,
-        product_name: i.name,
-        unit_price_cents: i.price_cents,
-        quantity: i.quantity,
-      }));
-      const { error: itemsErr } = await supabase.from("order_items").insert(lineItems);
-      if (itemsErr) throw itemsErr;
-
-      // 2. Simulate the payment gateway redirect + webhook verification
-      // (In production this would redirect to Stripe/Chapa session.url and the
-      // gateway would POST to /api/public/webhook/payment to mark "paid".)
-      await new Promise((r) => setTimeout(r, 900));
-      const res = await fetch("/api/public/webhook/payment", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          order_id: order.id,
-          // Demo signature — real gateway sends an HMAC we verify server-side.
-          signature: "demo",
-        }),
-      });
-      if (!res.ok) throw new Error("Payment verification failed");
-
-      clear();
-      toast.success("Payment confirmed");
-      navigate({ to: "/checkout/success" });
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : "Checkout failed";
-      toast.error(msg);
-    } finally {
-      setProcessing(false);
-    }
+    // Simulated webhook-ready POST /checkout flow
+    await new Promise((r) => setTimeout(r, 1100));
+    clear();
+    toast.success("Payment confirmed");
+    navigate({ to: "/checkout/success" });
   };
 
   if (!hydrated) {
@@ -117,21 +66,19 @@ function CartPage() {
         <ul className="divide-y divide-border">
           {items.map((item) => (
             <li key={item.id} className="flex gap-6 py-6">
-              {item.image_url && (
-                <img
-                  src={item.image_url}
-                  alt={item.name}
-                  width={120}
-                  height={120}
-                  className="h-28 w-28 flex-none rounded-sm object-cover"
-                />
-              )}
+              <img
+                src={item.image}
+                alt={item.name}
+                width={120}
+                height={120}
+                className="h-28 w-28 flex-none rounded-sm object-cover"
+              />
               <div className="flex flex-1 flex-col justify-between">
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <h3 className="font-display text-xl text-foreground">{item.name}</h3>
                     <p className="mt-1 text-sm text-muted-foreground">
-                      {formatPrice(item.price_cents)}
+                      {formatPrice(item.price)}
                     </p>
                   </div>
                   <button
@@ -168,7 +115,7 @@ function CartPage() {
                     </button>
                   </div>
                   <p className="font-display text-lg text-primary">
-                    {formatPrice(item.price_cents * item.quantity)}
+                    {formatPrice(item.price * item.quantity)}
                   </p>
                 </div>
               </div>
@@ -201,10 +148,10 @@ function CartPage() {
             disabled={processing}
             className="mt-8 w-full rounded-sm bg-primary py-4 text-xs uppercase tracking-[0.2em] text-primary-foreground transition-colors hover:bg-accent disabled:opacity-60"
           >
-            {processing ? "Processing…" : user ? "Proceed to checkout" : "Sign in to checkout"}
+            {processing ? "Processing…" : "Proceed to checkout"}
           </button>
           <p className="mt-4 text-center text-[11px] text-muted-foreground">
-            Secure payment via gateway · webhook-verified
+            Secure payment via gateway redirect.
           </p>
         </aside>
       </div>

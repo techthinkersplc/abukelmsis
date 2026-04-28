@@ -28,9 +28,7 @@ function Contact() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const [submitting, setSubmitting] = useState(false);
-
-  const onSubmit = async (e: React.FormEvent) => {
+  const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const result = schema.safeParse(form);
     if (!result.success) {
@@ -42,21 +40,8 @@ function Contact() {
       return;
     }
     setErrors({});
-    setSubmitting(true);
-    try {
-      const res = await fetch("/api/public/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(result.data),
-      });
-      if (!res.ok) throw new Error("Failed to send");
-      setForm({ name: "", email: "", message: "" });
-      toast.success("Message received — we'll write back shortly.");
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to send");
-    } finally {
-      setSubmitting(false);
-    }
+    setForm({ name: "", email: "", message: "" });
+    toast.success("Message received — we'll write back shortly.");
   };
 
   return (
@@ -93,10 +78,9 @@ function Contact() {
         </Field>
         <button
           type="submit"
-          disabled={submitting}
-          className="rounded-sm bg-primary px-8 py-4 text-xs uppercase tracking-[0.2em] text-primary-foreground transition-colors hover:bg-accent disabled:opacity-60"
+          className="rounded-sm bg-primary px-8 py-4 text-xs uppercase tracking-[0.2em] text-primary-foreground transition-colors hover:bg-accent"
         >
-          {submitting ? "Sending…" : "Send message"}
+          Send message
         </button>
       </form>
     </section>
