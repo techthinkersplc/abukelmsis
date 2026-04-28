@@ -1,7 +1,9 @@
 import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import { Toaster } from "sonner";
+import { useEffect } from "react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { useAuth } from "@/lib/auth-store";
 
 import appCss from "../styles.css?url";
 
@@ -73,6 +75,8 @@ function RootShell({ children }: { children: React.ReactNode }) {
 }
 
 function RootComponent() {
+  const init = useAuth((s) => s.init);
+  useEffect(() => init(), [init]);
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
