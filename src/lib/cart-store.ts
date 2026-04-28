@@ -5,8 +5,8 @@ import type { Product } from "./products";
 export type CartItem = {
   id: string;
   name: string;
-  price: number;
-  image: string;
+  price_cents: number;
+  image_url: string | null;
   quantity: number;
   stock: number;
 };
@@ -45,8 +45,8 @@ export const useCart = create<CartState>()(
               {
                 id: product.id,
                 name: product.name,
-                price: product.price,
-                image: product.image,
+                price_cents: product.price_cents,
+                image_url: product.image_url,
                 quantity: qty,
                 stock: product.stock,
               },
@@ -67,11 +67,11 @@ export const useCart = create<CartState>()(
         })),
       clear: () => set({ items: [] }),
       subtotal: () =>
-        get().items.reduce((sum, i) => sum + i.price * i.quantity, 0),
+        get().items.reduce((sum, i) => sum + i.price_cents * i.quantity, 0),
       count: () => get().items.reduce((n, i) => n + i.quantity, 0),
     }),
     {
-      name: "maison-cart",
+      name: "abukelemsis-cart",
       storage: createJSONStorage(() =>
         typeof window === "undefined"
           ? { getItem: () => null, setItem: () => {}, removeItem: () => {} }

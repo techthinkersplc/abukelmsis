@@ -1,21 +1,22 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import heroImg from "@/assets/hero.jpg";
 import { ProductCard } from "@/components/ProductCard";
-import { products } from "@/lib/products";
+import { fetchProducts, type Product } from "@/lib/products";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Maison Cremisi — Quietly crafted objects" },
+      { title: "አቡቀለምሲስ · Abukelemsis — Books & Creative Gifts" },
       {
         name: "description",
         content:
-          "Discover the new edition: leather, silk, timepieces and fragrance, made in small numbers.",
+          "አቡቀለምሲስ — discover the new edition of meaningful books and creative gifts.",
       },
-      { property: "og:title", content: "Maison Cremisi — The Cremisi Edition" },
+      { property: "og:title", content: "አቡቀለምሲስ — The Cremisi Edition" },
       {
         property: "og:description",
-        content: "Leather, silk, timepieces and fragrance, made in small numbers.",
+        content: "Books and creative gifts, made with care.",
       },
       { property: "og:image", content: heroImg },
       { name: "twitter:image", content: heroImg },
@@ -25,6 +26,21 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let alive = true;
+    fetchProducts()
+      .then((data) => alive && setProducts(data))
+      .catch((e) => alive && setError(e.message ?? "Failed to load"))
+      .finally(() => alive && setLoading(false));
+    return () => {
+      alive = false;
+    };
+  }, []);
+
   return (
     <>
       {/* Hero */}
@@ -32,7 +48,7 @@ function Home() {
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-6 py-16 md:grid-cols-2 md:py-28">
           <div className="flex flex-col justify-center">
             <p className="mb-6 text-xs uppercase tracking-[0.3em] text-accent">
-              The Cremisi Edition · 2026
+              አቡቀለምሲስ · Edition 2026
             </p>
             <h1 className="text-balance font-display text-5xl leading-[1.05] text-primary md:text-7xl">
               Quietly crafted<br />
@@ -40,8 +56,8 @@ function Home() {
               considered life.
             </h1>
             <p className="mt-6 max-w-md text-base text-muted-foreground">
-              A small house of leather, silk, timepieces and fragrance — each
-              piece numbered, each detail decided by hand.
+              የመጻሕፍት እና የመንፈሳዊ ሥጦታዎች ጥቅል — books and meaningful gifts,
+              chosen carefully and sent from our small atelier.
             </p>
             <div className="mt-10 flex flex-wrap items-center gap-4">
               <a
@@ -63,7 +79,7 @@ function Home() {
             <div className="aspect-[4/5] overflow-hidden rounded-md shadow-elegant">
               <img
                 src={heroImg}
-                alt="Model in burgundy holding a leather bag"
+                alt="Editorial portrait in burgundy"
                 width={1600}
                 height={1200}
                 className="h-full w-full object-cover"
@@ -79,7 +95,6 @@ function Home() {
         </div>
       </section>
 
-      {/* Marquee strip */}
       <section className="border-y border-border/60 bg-primary py-4 text-primary-foreground">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-12 gap-y-2 px-6 text-[11px] uppercase tracking-[0.3em] opacity-90">
           <span>Complimentary worldwide shipping</span>
@@ -90,7 +105,6 @@ function Home() {
         </div>
       </section>
 
-      {/* Catalog */}
       <section id="shop" className="mx-auto max-w-7xl px-6 py-24">
         <div className="mb-14 flex items-end justify-between">
           <div>
@@ -107,11 +121,31 @@ function Home() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
-          {products.map((p) => (
-            <ProductCard key={p.id} product={p} />
-          ))}
-        </div>
+        {loading && (
+          <div className="grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="animate-pulse">
+                <div className="aspect-square rounded-md bg-secondary" />
+                <div className="mt-4 h-4 w-2/3 rounded bg-secondary" />
+                <div className="mt-2 h-3 w-1/3 rounded bg-secondary" />
+              </div>
+            ))}
+          </div>
+        )}
+
+        {error && (
+          <div className="rounded-md border border-destructive/30 bg-destructive/5 p-6 text-sm text-destructive">
+            Couldn't load the catalog. {error}
+          </div>
+        )}
+
+        {!loading && !error && (
+          <div className="grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
+            {products.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+        )}
       </section>
     </>
   );

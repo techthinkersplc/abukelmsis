@@ -1,7 +1,8 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { ShoppingBag } from "lucide-react";
+import { LogOut, ShoppingBag, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useCart } from "@/lib/cart-store";
+import { useAuth } from "@/lib/auth-store";
 import logo from "@/assets/logo.jpg";
 
 const links = [
@@ -13,6 +14,8 @@ const links = [
 export function SiteHeader() {
   const { location } = useRouterState();
   const [count, setCount] = useState(0);
+  const user = useAuth((s) => s.user);
+  const signOut = useAuth((s) => s.signOut);
 
   useEffect(() => {
     const update = () => setCount(useCart.getState().count());
@@ -49,9 +52,7 @@ export function SiteHeader() {
                 key={l.to}
                 to={l.to}
                 className={`text-sm uppercase tracking-[0.2em] transition-colors ${
-                  active
-                    ? "text-primary"
-                    : "text-muted-foreground hover:text-primary"
+                  active ? "text-primary" : "text-muted-foreground hover:text-primary"
                 }`}
               >
                 {l.label}
@@ -60,19 +61,39 @@ export function SiteHeader() {
           })}
         </nav>
 
-        <Link
-          to="/cart"
-          className="relative inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm transition-colors hover:border-primary hover:text-primary"
-          aria-label="Open cart"
-        >
-          <ShoppingBag className="h-4 w-4" />
-          <span className="hidden sm:inline">Bag</span>
-          {count > 0 && (
-            <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-medium text-accent-foreground">
-              {count}
-            </span>
+        <div className="flex items-center gap-2">
+          {user ? (
+            <button
+              onClick={signOut}
+              title={user.email ?? "Sign out"}
+              className="hidden items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm transition-colors hover:border-primary hover:text-primary sm:inline-flex"
+            >
+              <LogOut className="h-4 w-4" />
+              Sign out
+            </button>
+          ) : (
+            <Link
+              to="/auth"
+              className="hidden items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm transition-colors hover:border-primary hover:text-primary sm:inline-flex"
+            >
+              <User className="h-4 w-4" />
+              Sign in
+            </Link>
           )}
-        </Link>
+          <Link
+            to="/cart"
+            className="relative inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm transition-colors hover:border-primary hover:text-primary"
+            aria-label="Open cart"
+          >
+            <ShoppingBag className="h-4 w-4" />
+            <span className="hidden sm:inline">Bag</span>
+            {count > 0 && (
+              <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-medium text-accent-foreground">
+                {count}
+              </span>
+            )}
+          </Link>
+        </div>
       </div>
     </header>
   );
