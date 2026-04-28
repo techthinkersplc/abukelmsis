@@ -6,7 +6,7 @@ import { useAuth } from "@/lib/auth-store";
 import logo from "@/assets/logo.jpg";
 
 const links = [
-  { to: "/", label: "የመጻሕፍት እና የመንፈሳዊ ሥጦታዎች ጥቅል — books and meaningful gifts" },
+  { to: "/", label: "Shop" },
   { to: "/about", label: "About" },
   { to: "/contact", label: "Contact" },
 ] as const;
