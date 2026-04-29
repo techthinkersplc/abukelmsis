@@ -5,7 +5,8 @@ import { useCart } from "@/lib/cart-store";
 import logo from "@/assets/logo.jpg";
 
 const links = [
-  { to: "/", label: "Shop" },
+  { to: "/", label: "Home" },
+  { to: "/shop", label: "Shop" },
   { to: "/order", label: "Order" },
   { to: "/contact", label: "Contact" },
 ] as const;
