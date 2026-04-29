@@ -26,7 +26,34 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
+type SortKey = "featured" | "price-asc" | "price-desc" | "name";
+
 function Home() {
+  const categories = useMemo(
+    () => ["All", ...Array.from(new Set(products.map((p) => p.category)))],
+    [],
+  );
+  const [query, setQuery] = useState("");
+  const [category, setCategory] = useState<string>("All");
+  const [sort, setSort] = useState<SortKey>("featured");
+
+  const visible = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    let list = products.filter((p) => {
+      const matchesCategory = category === "All" || p.category === category;
+      const matchesQuery =
+        !q ||
+        p.name.toLowerCase().includes(q) ||
+        p.description.toLowerCase().includes(q) ||
+        p.category.toLowerCase().includes(q);
+      return matchesCategory && matchesQuery;
+    });
+    if (sort === "price-asc") list = [...list].sort((a, b) => a.price - b.price);
+    else if (sort === "price-desc") list = [...list].sort((a, b) => b.price - a.price);
+    else if (sort === "name") list = [...list].sort((a, b) => a.name.localeCompare(b.name));
+    return list;
+  }, [query, category, sort]);
+
   return (
     <>
       {/* Hero */}
