@@ -127,30 +127,6 @@ function Home() {
         </div>
       </section>
 
-      {/* Story */}
-      <section className="border-t border-border/60 bg-card">
-        <div className="mx-auto grid max-w-5xl gap-10 px-6 py-24 md:grid-cols-[1fr_2fr]">
-          <p className="text-xs uppercase tracking-[0.3em] text-accent">
-            The house
-          </p>
-          <div className="space-y-6 text-base leading-relaxed text-muted-foreground">
-            <p className="font-display text-3xl leading-snug text-primary">
-              We make a few things, and we make them carefully.
-            </p>
-            <p>
-              አቡቀለምሲስ began with a single idea: that fewer, better objects can
-              shape a more considered life. Every edition is numbered. Every box
-              passes through the same pair of hands.
-            </p>
-            <Link
-              to="/contact"
-              className="inline-flex items-center text-xs uppercase tracking-[0.2em] text-foreground underline-offset-4 hover:underline"
-            >
-              Speak with the atelier →
-            </Link>
-          </div>
-        </div>
-      </section>
     </>
   );
 }
