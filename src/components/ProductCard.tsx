@@ -1,6 +1,6 @@
 import { toast } from "sonner";
 import { useCart } from "@/lib/cart-store";
-import { formatPrice, type Product } from "@/lib/products";
+import { type Product } from "@/lib/products";
 
 export function ProductCard({ product }: { product: Product }) {
   const add = useCart((s) => s.add);
@@ -29,14 +29,11 @@ export function ProductCard({ product }: { product: Product }) {
           Add to bag
         </button>
       </div>
-      <div className="mt-4 flex items-start justify-between gap-4">
-        <div>
-          <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-            {product.category}
-          </p>
-          <h3 className="mt-1 font-display text-xl text-foreground">{product.name}</h3>
-        </div>
-        <p className="font-display text-lg text-primary">{formatPrice(product.price)}</p>
+      <div className="mt-4">
+        <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+          {product.category}
+        </p>
+        <h3 className="mt-1 font-display text-xl text-foreground">{product.name}</h3>
       </div>
     </article>
   );

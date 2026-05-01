@@ -50,7 +50,7 @@ export function SiteHeader() {
               <Link
                 key={l.to}
                 to={l.to}
-                className={`text-sm uppercase tracking-[0.2em] transition-colors ${
+                className={`text-[11px] uppercase tracking-[0.18em] transition-colors ${
                   active
                     ? "text-primary"
                     : "text-muted-foreground hover:text-primary"
