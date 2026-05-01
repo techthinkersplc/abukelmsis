@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo } from "react";
-import { products } from "@/lib/products";
+import { categorySlugs, products } from "@/lib/products";
 
 export const Route = createFileRoute("/categories")({
   head: () => ({
