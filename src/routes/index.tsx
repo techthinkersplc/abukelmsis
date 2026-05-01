@@ -32,34 +32,28 @@ function Home() {
     <>
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-6 py-16 md:grid-cols-2 md:py-28">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-6 py-16 md:grid-cols-2 md:py-24">
           <div className="flex flex-col justify-center">
-            <h1 className="text-balance font-display text-4xl leading-[1.15] text-primary md:text-6xl">
-              አቡቀለምሲስ መንፈሳዊ መጽሐፍት እና ስጦታዎች
+            <h1 className="font-display text-5xl font-bold leading-[1.05] md:text-7xl">
+              <span className="block text-accent">Shop happy</span>
+              <span className="block text-foreground">Shop</span>
+              <span className="block text-accent">አቡቀለምሲስ</span>
             </h1>
-            <div className="mt-6 max-w-md space-y-3 text-base text-muted-foreground">
-              <p>ጥራት መለያችን ✨</p>
-              <p>ፍጥነት እና ታማኝነት ዘውትር የምንመሰገንበት ነው 🎁</p>
-              <p>ይመርጡናል እንጂ አያወዳድሩንም ✨</p>
-            </div>
-            <div className="mt-10 flex flex-wrap items-center gap-4">
+            <p className="mt-6 max-w-md text-base text-muted-foreground">
+              መንፈሳዊ መጽሐፍት እና ስጦታዎች — quality, speed and trust, every time.
+            </p>
+            <div className="mt-8">
               <Link
                 to="/shop"
-                className="inline-flex items-center rounded-sm bg-primary px-8 py-4 text-xs uppercase tracking-[0.2em] text-primary-foreground transition-colors hover:bg-accent"
+                className="inline-flex items-center rounded-full border border-border bg-card px-8 py-3 text-sm font-medium text-foreground transition-colors hover:border-accent hover:text-accent"
               >
-                Shop the collection
-              </Link>
-              <Link
-                to="/categories"
-                className="inline-flex items-center text-xs uppercase tracking-[0.2em] text-foreground underline-offset-4 hover:underline"
-              >
-                Browse categories →
+                Shop Now
               </Link>
             </div>
           </div>
 
           <div className="relative">
-            <div className="aspect-[4/5] overflow-hidden rounded-md shadow-elegant">
+            <div className="aspect-[4/5] overflow-hidden rounded-lg shadow-elegant">
               <img
                 src={heroImg}
                 alt="አቡቀለምሲስ — መንፈሳዊ መጽሐፍት እና ስጦታዎች"

@@ -8,7 +8,7 @@ export const Route = createFileRoute("/categories")({
       { title: "Categories — አቡቀለምሲስ" },
       {
         name: "description",
-        content: "Browse Abukelemsis categories — icons, crosses, books and gift sets.",
+        content: "Browse Abukelemsis categories — የራሺያ ሥእሎች, crosses, books and gift sets.",
       },
       { property: "og:title", content: "Categories — አቡቀለምሲስ" },
       {
@@ -32,37 +32,38 @@ function CategoriesPage() {
   }, []);
 
   return (
-    <section className="mx-auto max-w-7xl px-6 py-20">
-      <p className="text-xs uppercase tracking-[0.3em] text-accent">Categories</p>
-      <h1 className="mt-3 font-display text-5xl text-primary md:text-6xl">
-        Browse by category
+    <section className="mx-auto max-w-7xl px-6 py-16">
+      <h1 className="font-display text-4xl font-bold text-foreground md:text-5xl">
+        Pick <span className="text-accent">Your Preference</span>
       </h1>
 
-      <div className="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
-        {grouped.map(([category, items]) => (
-          <div key={category} className="rounded-md border border-border bg-card p-6">
-            <div className="flex items-baseline justify-between">
-              <h2 className="font-display text-2xl text-primary">{category}</h2>
-              <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                {items.length} items
-              </span>
-            </div>
-            <ul className="mt-4 space-y-2 text-sm text-foreground">
-              {items.map((p) => (
-                <li key={p.id} className="flex items-center justify-between">
-                  <span>{p.name}</span>
-                  <span className="text-muted-foreground">{p.category}</span>
-                </li>
-              ))}
-            </ul>
+      <div className="mt-10 grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
+        {grouped.map(([category, items]) => {
+          const cover = items[0]?.image;
+          return (
             <Link
+              key={category}
               to="/shop"
-              className="mt-6 inline-flex text-xs uppercase tracking-[0.2em] text-foreground underline-offset-4 hover:underline"
+              className="group relative aspect-square overflow-hidden rounded-lg border border-border bg-card transition-colors hover:border-accent"
             >
-              Shop {category} →
+              {cover && (
+                <img
+                  src={cover}
+                  alt={category}
+                  className="absolute inset-0 h-full w-full object-cover opacity-50 transition-all duration-700 group-hover:opacity-70 group-hover:scale-105"
+                />
+              )}
+              <span className="absolute left-3 top-3 rounded-md bg-background/80 px-2 py-1 text-[10px] uppercase tracking-[0.2em] text-foreground">
+                {category}
+              </span>
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background/95 to-transparent p-4">
+                <p className="text-center font-medium text-foreground">
+                  {category}
+                </p>
+              </div>
             </Link>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );

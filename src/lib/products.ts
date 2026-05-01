@@ -22,7 +22,7 @@ export const products: Product[] = [
   {
     id: "item-01",
     name: "Item 1",
-    category: "Icons",
+    category: "የራሺያ ሥእሎች",
     price: 1500,
     stock: 10,
     image: p1,
@@ -31,7 +31,7 @@ export const products: Product[] = [
   {
     id: "item-02",
     name: "Item 2",
-    category: "Icons",
+    category: "የራሺያ ሥእሎች",
     price: 1400,
     stock: 10,
     image: p2,
@@ -40,7 +40,7 @@ export const products: Product[] = [
   {
     id: "item-03",
     name: "Item 3",
-    category: "Icons",
+    category: "የራሺያ ሥእሎች",
     price: 1600,
     stock: 8,
     image: p3,
