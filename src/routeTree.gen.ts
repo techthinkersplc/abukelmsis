@@ -12,7 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as OrderRouteImport } from './routes/order'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CategoriesRouteImport } from './routes/categories'
 import { Route as CartRouteImport } from './routes/cart'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CheckoutSuccessRouteImport } from './routes/checkout.success'
 
@@ -31,9 +33,19 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CategoriesRoute = CategoriesRouteImport.update({
+  id: '/categories',
+  path: '/categories',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CartRoute = CartRouteImport.update({
   id: '/cart',
   path: '/cart',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -49,7 +61,9 @@ const CheckoutSuccessRoute = CheckoutSuccessRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/cart': typeof CartRoute
+  '/categories': typeof CategoriesRoute
   '/contact': typeof ContactRoute
   '/order': typeof OrderRoute
   '/shop': typeof ShopRoute
@@ -57,7 +71,9 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/cart': typeof CartRoute
+  '/categories': typeof CategoriesRoute
   '/contact': typeof ContactRoute
   '/order': typeof OrderRoute
   '/shop': typeof ShopRoute
@@ -66,7 +82,9 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/cart': typeof CartRoute
+  '/categories': typeof CategoriesRoute
   '/contact': typeof ContactRoute
   '/order': typeof OrderRoute
   '/shop': typeof ShopRoute
@@ -76,17 +94,29 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
     | '/cart'
+    | '/categories'
     | '/contact'
     | '/order'
     | '/shop'
     | '/checkout/success'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/cart' | '/contact' | '/order' | '/shop' | '/checkout/success'
+  to:
+    | '/'
+    | '/about'
+    | '/cart'
+    | '/categories'
+    | '/contact'
+    | '/order'
+    | '/shop'
+    | '/checkout/success'
   id:
     | '__root__'
     | '/'
+    | '/about'
     | '/cart'
+    | '/categories'
     | '/contact'
     | '/order'
     | '/shop'
@@ -95,7 +125,9 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   CartRoute: typeof CartRoute
+  CategoriesRoute: typeof CategoriesRoute
   ContactRoute: typeof ContactRoute
   OrderRoute: typeof OrderRoute
   ShopRoute: typeof ShopRoute
@@ -125,11 +157,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/categories': {
+      id: '/categories'
+      path: '/categories'
+      fullPath: '/categories'
+      preLoaderRoute: typeof CategoriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/cart': {
       id: '/cart'
       path: '/cart'
       fullPath: '/cart'
       preLoaderRoute: typeof CartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -151,7 +197,9 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   CartRoute: CartRoute,
+  CategoriesRoute: CategoriesRoute,
   ContactRoute: ContactRoute,
   OrderRoute: OrderRoute,
   ShopRoute: ShopRoute,

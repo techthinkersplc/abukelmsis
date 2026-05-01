@@ -1,7 +1,12 @@
-import bag from "@/assets/product-bag.jpg";
-import scarf from "@/assets/product-scarf.jpg";
-import watch from "@/assets/product-watch.jpg";
-import perfume from "@/assets/product-perfume.jpg";
+import p1 from "@/assets/product-01.jpg";
+import p2 from "@/assets/product-02.jpg";
+import p3 from "@/assets/product-03.jpg";
+import p4 from "@/assets/product-04.jpg";
+import p5 from "@/assets/product-05.jpg";
+import p6 from "@/assets/product-06.jpg";
+import p7 from "@/assets/product-07.jpg";
+import p8 from "@/assets/product-08.jpg";
+import p9 from "@/assets/product-09.jpg";
 
 export type Product = {
   id: string;
@@ -15,46 +20,100 @@ export type Product = {
 
 export const products: Product[] = [
   {
-    id: "bag-001",
-    name: "Aurelia Leather Tote",
-    category: "Bags",
-    price: 420,
+    id: "item-01",
+    name: "Item 1",
+    category: "Icons",
+    price: 1500,
+    stock: 10,
+    image: p1,
+    description: "መንፈሳዊ ሥዕል — handcrafted spiritual scroll icon.",
+  },
+  {
+    id: "item-02",
+    name: "Item 2",
+    category: "Icons",
+    price: 1400,
+    stock: 10,
+    image: p2,
+    description: "መንፈሳዊ ሥዕል — handcrafted spiritual scroll icon.",
+  },
+  {
+    id: "item-03",
+    name: "Item 3",
+    category: "Icons",
+    price: 1600,
     stock: 8,
-    image: bag,
-    description:
-      "Hand-finished full-grain leather tote with brass hardware and a structured silhouette.",
+    image: p3,
+    description: "መንፈሳዊ ሥዕል — handcrafted spiritual scroll icon.",
   },
   {
-    id: "scarf-001",
-    name: "Cremisi Silk Scarf",
-    category: "Accessories",
-    price: 145,
-    stock: 14,
-    image: scarf,
-    description:
-      "Mulberry silk scarf woven in deep burgundy with a soft hand and luminous drape.",
+    id: "item-04",
+    name: "Item 4",
+    category: "Crosses",
+    price: 900,
+    stock: 12,
+    image: p4,
+    description: "ባህላዊ መስቀል — traditional wooden cross.",
   },
   {
-    id: "watch-001",
-    name: "Solene Gold Watch",
-    category: "Timepieces",
-    price: 680,
+    id: "item-05",
+    name: "Item 5",
+    category: "Crosses",
+    price: 2200,
+    stock: 6,
+    image: p5,
+    description: "ባለ ቅርጽ መስቀል — ornate standing crucifix.",
+  },
+  {
+    id: "item-06",
+    name: "Item 6",
+    category: "Books",
+    price: 2500,
     stock: 5,
-    image: watch,
-    description:
-      "Minimalist 38mm gold-tone case paired with a hand-stitched burgundy leather strap.",
+    image: p6,
+    description: "መጽሐፍ ቅዱስ — engraved wooden bible set.",
   },
   {
-    id: "perfume-001",
-    name: "Velluto Eau de Parfum",
-    category: "Fragrance",
-    price: 195,
-    stock: 22,
-    image: perfume,
-    description:
-      "Amber, oud, and rose layered into an enveloping fragrance — 50ml flacon with brass cap.",
+    id: "item-07",
+    name: "Item 7",
+    category: "Books",
+    price: 2300,
+    stock: 5,
+    image: p7,
+    description: "መጽሐፍ ቅዱስ — engraved wooden bible.",
+  },
+  {
+    id: "item-08",
+    name: "Item 8",
+    category: "Books",
+    price: 2400,
+    stock: 5,
+    image: p8,
+    description: "መጽሐፍ ቅዱስ — engraved wooden bible.",
+  },
+  {
+    id: "item-09",
+    name: "Item 9",
+    category: "Gift Sets",
+    price: 3500,
+    stock: 4,
+    image: p9,
+    description: "የበዓል ሥጦታ — curated gift set with bag.",
+  },
+  {
+    id: "item-10",
+    name: "Item 10",
+    category: "Gift Sets",
+    price: 3200,
+    stock: 4,
+    image: p6,
+    description: "የበዓል ሥጦታ — curated gift set.",
   },
 ];
 
 export const formatPrice = (n: number) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(n);
+  new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "ETB",
+    maximumFractionDigits: 0,
+  }).format(n);
