@@ -111,6 +111,16 @@ export const products: Product[] = [
   },
 ];
 
+export const categorySlugs: Record<string, string> = {
+  "የራሺያ ሥእሎች": "russian-icons",
+  "Crosses": "crosses",
+  "Books": "books",
+  "Gift Sets": "gift-sets",
+};
+
+export const slugToCategory = (slug: string): string | undefined =>
+  Object.entries(categorySlugs).find(([, s]) => s === slug)?.[0];
+
 export const formatPrice = (n: number) =>
   new Intl.NumberFormat("en-US", {
     style: "currency",

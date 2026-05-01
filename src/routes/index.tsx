@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useMemo } from "react";
 import heroImg from "@/assets/hero.jpg";
 import { ProductCard } from "@/components/ProductCard";
-import { products } from "@/lib/products";
+import { categorySlugs, products } from "@/lib/products";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -25,8 +26,16 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
-  const pickYourPreference = products.slice(0, 8);
   const handpicked = products.slice(0, 4);
+  const categoryCards = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const p of products) if (!map.has(p.category)) map.set(p.category, p.image);
+    return Array.from(map.entries()).map(([category, image]) => ({
+      category,
+      image,
+      slug: categorySlugs[category] ?? category,
+    }));
+  }, []);
 
   return (
     <>
@@ -95,9 +104,25 @@ function Home() {
             View all →
           </Link>
         </div>
-        <div className="grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
-          {pickYourPreference.map((p) => (
-            <ProductCard key={p.id} product={p} />
+        <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
+          {categoryCards.map(({ category, image, slug }) => (
+            <Link
+              key={category}
+              to="/categories/$slug"
+              params={{ slug }}
+              className="group relative aspect-square overflow-hidden rounded-lg border border-border bg-card transition-colors hover:border-accent"
+            >
+              <img
+                src={image}
+                alt={category}
+                className="absolute inset-0 h-full w-full object-cover opacity-55 transition-all duration-700 group-hover:scale-105 group-hover:opacity-75"
+              />
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background/95 to-transparent p-4">
+                <p className="text-center font-display text-lg text-foreground">
+                  {category}
+                </p>
+              </div>
+            </Link>
           ))}
         </div>
       </section>
