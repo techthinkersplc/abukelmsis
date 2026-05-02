@@ -7,6 +7,7 @@ import p6 from "@/assets/product-06.jpg";
 import p7 from "@/assets/product-07.jpg";
 import p8 from "@/assets/product-08.jpg";
 import p9 from "@/assets/product-09.jpg";
+import pGabi from "@/assets/product-gabi.jpg";
 
 export type Product = {
   id: string;
@@ -108,6 +109,24 @@ export const products: Product[] = [
     stock: 4,
     image: p6,
     description: "የበዓል ሥጦታ — curated gift set.",
+  },
+  {
+    id: "item-11",
+    name: "Gabi Netela 1",
+    category: "Gabi Netela",
+    price: 2800,
+    stock: 6,
+    image: pGabi,
+    description: "ጋቢ ነጠላ — handwoven cotton shawl with embroidered tibeb border.",
+  },
+  {
+    id: "item-12",
+    name: "Gabi Netela 2",
+    category: "Gabi Netela",
+    price: 3000,
+    stock: 5,
+    image: pGabi,
+    description: "ጋቢ ነጠላ — traditional Ethiopian handwoven netela.",
   },
 ];
 
