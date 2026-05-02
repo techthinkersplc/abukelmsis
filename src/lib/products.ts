@@ -7,7 +7,11 @@ import p6 from "@/assets/product-06.jpg";
 import p7 from "@/assets/product-07.jpg";
 import p8 from "@/assets/product-08.jpg";
 import p9 from "@/assets/product-09.jpg";
-import pGabi from "@/assets/product-gabi.jpg";
+import gabi1 from "@/assets/gabi-01.jpg";
+import gabi2 from "@/assets/gabi-02.jpg";
+import gabi3 from "@/assets/gabi-03.jpg";
+import gabi4 from "@/assets/gabi-04.jpg";
+import gabi5 from "@/assets/gabi-05.jpg";
 
 export type Product = {
   id: string;
@@ -111,22 +115,49 @@ export const products: Product[] = [
     description: "የበዓል ሥጦታ — curated gift set.",
   },
   {
-    id: "item-11",
-    name: "Gabi Netela 1",
+    id: "gabi-01",
+    name: "ጋቢ ነጠላ — Tibeb Multicolor",
+    category: "Gabi Netela",
+    price: 3200,
+    stock: 5,
+    image: gabi1,
+    description: "ጋቢ ነጠላ — handwoven cotton netela with vibrant multicolor tibeb border.",
+  },
+  {
+    id: "gabi-02",
+    name: "ጋቢ ነጠላ — White Tibeb",
+    category: "Gabi Netela",
+    price: 2900,
+    stock: 5,
+    image: gabi2,
+    description: "ጋቢ ነጠላ — pure white handwoven netela with delicate white tibeb pattern.",
+  },
+  {
+    id: "gabi-03",
+    name: "ጋቢ ነጠላ — Gold Cross",
+    category: "Gabi Netela",
+    price: 3400,
+    stock: 4,
+    image: gabi3,
+    description: "ጋቢ ነጠላ — white netela with gold embroidered cross motif border.",
+  },
+  {
+    id: "gabi-04",
+    name: "ጋቢ ነጠላ — Rainbow Tibeb",
+    category: "Gabi Netela",
+    price: 3300,
+    stock: 4,
+    image: gabi4,
+    description: "ጋቢ ነጠላ — handwoven netela with rainbow tibeb diamond pattern.",
+  },
+  {
+    id: "gabi-05",
+    name: "ጋቢ ነጠላ — Green Border",
     category: "Gabi Netela",
     price: 2800,
     stock: 6,
-    image: pGabi,
-    description: "ጋቢ ነጠላ — handwoven cotton shawl with embroidered tibeb border.",
-  },
-  {
-    id: "item-12",
-    name: "Gabi Netela 2",
-    category: "Gabi Netela",
-    price: 3000,
-    stock: 5,
-    image: pGabi,
-    description: "ጋቢ ነጠላ — traditional Ethiopian handwoven netela.",
+    image: gabi5,
+    description: "ጋቢ ነጠላ — soft white netela with bright green tibeb border.",
   },
 ];
 
