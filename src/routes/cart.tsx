@@ -1,5 +1,5 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { Minus, Plus, X } from "lucide-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Minus, Plus, Trash2, ArrowLeft, ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useCart } from "@/lib/cart-store";
@@ -8,7 +8,7 @@ import { formatPrice } from "@/lib/products";
 export const Route = createFileRoute("/cart")({
   head: () => ({
     meta: [
-      { title: "Your bag — Maison Cremisi" },
+      { title: "Your Cart — አቡቀለምሲስ" },
       { name: "description", content: "Review your selection and proceed to checkout." },
     ],
   }),
@@ -16,85 +16,55 @@ export const Route = createFileRoute("/cart")({
 });
 
 function CartPage() {
-  const navigate = useNavigate();
   const [hydrated, setHydrated] = useState(false);
   const items = useCart((s) => s.items);
   const subtotal = useCart((s) => s.subtotal());
   const setQuantity = useCart((s) => s.setQuantity);
   const remove = useCart((s) => s.remove);
-  const clear = useCart((s) => s.clear);
-  const [processing, setProcessing] = useState(false);
 
   useEffect(() => setHydrated(true), []);
 
-  const onCheckout = async () => {
-    setProcessing(true);
-    // Simulated webhook-ready POST /checkout flow
-    await new Promise((r) => setTimeout(r, 1100));
-    clear();
-    toast.success("Payment confirmed");
-    navigate({ to: "/checkout/success" });
-  };
-
-  if (!hydrated) {
-    return <div className="mx-auto max-w-5xl px-6 py-24" />;
-  }
+  if (!hydrated) return <div className="mx-auto max-w-4xl px-6 py-16" />;
 
   if (items.length === 0) {
     return (
-      <section className="mx-auto max-w-2xl px-6 py-32 text-center">
-        <p className="text-xs uppercase tracking-[0.3em] text-accent">Your bag</p>
-        <h1 className="mt-4 font-display text-5xl text-primary">Empty for now.</h1>
-        <p className="mt-4 text-muted-foreground">
-          When you find something you love, it will rest here.
-        </p>
+      <section className="mx-auto max-w-2xl px-6 py-24 text-center">
+        <h1 className="font-display text-4xl text-primary">Your Cart</h1>
+        <p className="mt-6 text-muted-foreground">Your cart is empty.</p>
         <Link
           to="/"
-          className="mt-10 inline-flex items-center rounded-sm bg-primary px-8 py-4 text-xs uppercase tracking-[0.2em] text-primary-foreground transition-colors hover:bg-accent"
+          className="mt-8 inline-flex items-center gap-2 rounded-full border border-border bg-background px-6 py-3 text-sm transition-colors hover:bg-secondary"
         >
-          Browse the edition
+          <ArrowLeft className="h-4 w-4" />
+          Continue Shopping
         </Link>
       </section>
     );
   }
 
   return (
-    <section className="mx-auto max-w-6xl px-6 py-20">
-      <h1 className="font-display text-5xl text-primary">Your bag</h1>
+    <section className="mx-auto max-w-4xl px-6 py-12">
+      <h1 className="font-display text-4xl font-bold text-primary">Your Cart</h1>
 
-      <div className="mt-12 grid gap-12 lg:grid-cols-[1fr_360px]">
-        <ul className="divide-y divide-border">
-          {items.map((item) => (
-            <li key={item.id} className="flex gap-6 py-6">
-              <img
-                src={item.image}
-                alt={item.name}
-                width={120}
-                height={120}
-                className="h-28 w-28 flex-none rounded-sm object-cover"
-              />
-              <div className="flex flex-1 flex-col justify-between">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <h3 className="font-display text-xl text-foreground">{item.name}</h3>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      {formatPrice(item.price)}
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => remove(item.id)}
-                    aria-label="Remove"
-                    className="text-muted-foreground transition-colors hover:text-destructive"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="inline-flex items-center rounded-sm border border-border">
+      <div className="mt-8 space-y-4">
+        <div className="rounded-2xl border border-border bg-card p-6">
+          <ul className="divide-y divide-border">
+            {items.map((item) => (
+              <li key={item.id} className="flex items-center gap-4 py-4 first:pt-0 last:pb-0">
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className="h-20 w-20 flex-none rounded-md object-cover"
+                />
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-display text-base text-foreground truncate">{item.name}</h3>
+                  <p className="mt-1 text-sm font-semibold text-foreground">
+                    {formatPrice(item.price)}
+                  </p>
+                  <div className="mt-2 inline-flex items-center rounded-full border border-border">
                     <button
                       onClick={() => setQuantity(item.id, item.quantity - 1)}
-                      className="px-3 py-2 text-muted-foreground transition-colors hover:text-primary"
+                      className="px-3 py-1 text-muted-foreground hover:text-primary"
                       aria-label="Decrease"
                     >
                       <Minus className="h-3 w-3" />
@@ -108,52 +78,56 @@ function CartPage() {
                         }
                         setQuantity(item.id, item.quantity + 1);
                       }}
-                      className="px-3 py-2 text-muted-foreground transition-colors hover:text-primary"
+                      className="px-3 py-1 text-muted-foreground hover:text-primary"
                       aria-label="Increase"
                     >
                       <Plus className="h-3 w-3" />
                     </button>
                   </div>
-                  <p className="font-display text-lg text-primary">
+                </div>
+                <div className="flex flex-col items-end gap-3">
+                  <p className="font-semibold text-foreground">
                     {formatPrice(item.price * item.quantity)}
                   </p>
+                  <button
+                    onClick={() => remove(item.id)}
+                    aria-label="Remove"
+                    className="text-muted-foreground hover:text-destructive"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
                 </div>
-              </div>
-            </li>
-          ))}
-        </ul>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-        <aside className="h-fit rounded-md border border-border bg-card p-8 shadow-soft">
-          <h2 className="font-display text-2xl text-primary">Summary</h2>
-          <dl className="mt-6 space-y-3 text-sm">
-            <div className="flex justify-between">
-              <dt className="text-muted-foreground">Subtotal</dt>
-              <dd>{formatPrice(subtotal)}</dd>
-            </div>
-            <div className="flex justify-between">
-              <dt className="text-muted-foreground">Shipping</dt>
-              <dd>Complimentary</dd>
-            </div>
-          </dl>
-          <div className="mt-6 flex items-baseline justify-between border-t border-border pt-6">
-            <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-              Total
-            </span>
-            <span className="font-display text-2xl text-primary">
+        <div className="rounded-2xl border border-border bg-card p-6">
+          <div className="flex items-center justify-between">
+            <span className="text-muted-foreground">Subtotal</span>
+            <span className="font-display text-2xl font-bold text-foreground">
               {formatPrice(subtotal)}
             </span>
           </div>
-          <button
-            onClick={onCheckout}
-            disabled={processing}
-            className="mt-8 w-full rounded-sm bg-primary py-4 text-xs uppercase tracking-[0.2em] text-primary-foreground transition-colors hover:bg-accent disabled:opacity-60"
-          >
-            {processing ? "Processing…" : "Proceed to checkout"}
-          </button>
-          <p className="mt-4 text-center text-[11px] text-muted-foreground">
-            Secure payment via gateway redirect.
-          </p>
-        </aside>
+          <p className="mt-1 text-xs text-muted-foreground">Shipping calculated at checkout</p>
+
+          <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <Link
+              to="/"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-border bg-background px-6 py-3 text-sm transition-colors hover:bg-secondary"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Continue Shopping
+            </Link>
+            <Link
+              to="/checkout"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-accent"
+            >
+              Checkout
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
       </div>
     </section>
   );
