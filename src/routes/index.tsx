@@ -35,9 +35,9 @@ function Home() {
         <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-6 py-16 md:grid-cols-2 md:py-24">
           <div className="flex flex-col justify-center">
             <h1 className="font-display text-5xl font-bold leading-[1.05] md:text-7xl">
-              <span className="block text-accent">Shop happy</span>
-              <span className="block text-foreground">Shop</span>
-              <span className="block text-accent">አቡቀለምሲስ</span>
+              <span className="text-foreground">Shop </span>
+              <span className="text-accent">መንፈሳዊ መጽሐፍት እና ስጦታዎች</span>
+              <span className="block text-foreground">Shop <span className="text-accent">አቡቀለምሲስ</span></span>
             </h1>
             <p className="mt-6 max-w-md text-base text-muted-foreground">
               መንፈሳዊ መጽሐፍት እና ስጦታዎች — quality, speed and trust, every time.
