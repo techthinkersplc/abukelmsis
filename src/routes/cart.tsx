@@ -97,13 +97,7 @@ function CartPage() {
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-6">
-          <div className="flex items-center justify-between">
-            <span className="text-muted-foreground">Subtotal</span>
-            <span className="font-display text-2xl font-bold text-foreground">
-              {formatPrice(subtotal)}
-            </span>
-          </div>
-          <p className="mt-1 text-xs text-muted-foreground">Shipping calculated at checkout</p>
+          <p className="text-sm text-muted-foreground">Shipping calculated at checkout</p>
 
           <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
             <Link
