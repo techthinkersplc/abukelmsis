@@ -58,9 +58,6 @@ function CartPage() {
                 />
                 <div className="flex-1 min-w-0">
                   <h3 className="font-display text-base text-foreground truncate">{item.name}</h3>
-                  <p className="mt-1 text-sm font-semibold text-foreground">
-                    {formatPrice(item.price)}
-                  </p>
                   <div className="mt-2 inline-flex items-center rounded-full border border-border">
                     <button
                       onClick={() => setQuantity(item.id, item.quantity - 1)}
@@ -86,9 +83,6 @@ function CartPage() {
                   </div>
                 </div>
                 <div className="flex flex-col items-end gap-3">
-                  <p className="font-semibold text-foreground">
-                    {formatPrice(item.price * item.quantity)}
-                  </p>
                   <button
                     onClick={() => remove(item.id)}
                     aria-label="Remove"
