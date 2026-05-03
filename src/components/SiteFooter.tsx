@@ -1,35 +1,50 @@
+import { useState } from "react";
+import { toast } from "sonner";
+import { z } from "zod";
+
 export function SiteFooter() {
+  const [email, setEmail] = useState("");
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const result = z.string().trim().email().max(255).safeParse(email);
+    if (!result.success) {
+      toast.error("Please enter a valid email");
+      return;
+    }
+    setEmail("");
+    toast.success("Subscribed — thank you!");
+  };
+
   return (
-    <footer className="mt-32 border-t border-border/60 bg-primary text-primary-foreground">
-      <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 md:grid-cols-3">
-        <div>
-          <h3 className="font-display text-2xl">አቡቀለምሲስ</h3>
-          <p className="mt-1 text-xs uppercase tracking-[0.25em] opacity-70">
-            Abukelemsis
-          </p>
-          <p className="mt-3 max-w-xs text-sm opacity-80">
-            የመጻሕፍት እና የመንፈሳዊ ሥጦታዎች ጥቅል — books and creative spiritual gifts,
-            curated with care.
-          </p>
-        </div>
-        <div className="text-sm">
-          <h4 className="mb-3 text-xs uppercase tracking-[0.2em] opacity-70">House</h4>
-          <ul className="space-y-2 opacity-90">
-            <li>About the atelier</li>
-            <li>Sustainability</li>
-            <li>Press</li>
-          </ul>
-        </div>
-        <div className="text-sm">
-          <h4 className="mb-3 text-xs uppercase tracking-[0.2em] opacity-70">Care</h4>
-          <ul className="space-y-2 opacity-90">
-            <li>Shipping & returns</li>
-            <li>Client services</li>
-            <li>Privacy</li>
-          </ul>
-        </div>
+    <footer className="mt-32 bg-[oklch(0.18_0.02_18)] text-primary-foreground">
+      <div className="mx-auto max-w-3xl px-6 py-20 text-center">
+        <h3 className="font-display text-4xl font-bold text-accent md:text-5xl">
+          Subscribe to Our Newsletter
+        </h3>
+        <p className="mx-auto mt-4 max-w-md text-sm opacity-80">
+          Stay updated with our latest products and exclusive offers
+        </p>
+
+        <form
+          onSubmit={onSubmit}
+          className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row"
+        >
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your email"
+            className="flex-1 rounded-md border border-white/15 bg-transparent px-4 py-3 text-sm text-primary-foreground outline-none placeholder:text-white/50 focus:border-accent"
+          />
+          <button
+            type="submit"
+            className="rounded-md bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground transition-colors hover:opacity-90"
+          >
+            Subscribe
+          </button>
+        </form>
       </div>
-      <div className="border-t border-primary-foreground/10 px-6 py-6 text-center text-xs opacity-70">
+      <div className="border-t border-white/10 px-6 py-6 text-center text-xs opacity-70">
         © {new Date().getFullYear()} አቡቀለምሲስ · Abukelemsis. All rights reserved.
       </div>
     </footer>
