@@ -12,6 +12,16 @@ import gabi2 from "@/assets/gabi-02.jpg";
 import gabi3 from "@/assets/gabi-03.jpg";
 import gabi4 from "@/assets/gabi-04.jpg";
 import gabi5 from "@/assets/gabi-05.jpg";
+import shopCrossSet from "@/assets/shop-cross-set.jpg";
+import shopGabi6 from "@/assets/shop-gabi-06.jpg";
+import shopGabi7 from "@/assets/shop-gabi-07.jpg";
+import shopGabi8 from "@/assets/shop-gabi-08.jpg";
+import shopGabi9 from "@/assets/shop-gabi-09.jpg";
+import shopGabi10 from "@/assets/shop-gabi-10.jpg";
+import shopRussianIcons from "@/assets/shop-russian-icons.jpg";
+import shopProcessionalCross from "@/assets/shop-processional-cross.jpg";
+import shopSaintSet from "@/assets/shop-saint-set.jpg";
+import shopRobe from "@/assets/shop-robe.jpg";
 
 export type Product = {
   id: string;
