@@ -3,7 +3,7 @@ import { Minus, Plus, Trash2, ArrowLeft, ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useCart } from "@/lib/cart-store";
-import { formatPrice } from "@/lib/products";
+
 
 export const Route = createFileRoute("/cart")({
   head: () => ({
@@ -18,7 +18,7 @@ export const Route = createFileRoute("/cart")({
 function CartPage() {
   const [hydrated, setHydrated] = useState(false);
   const items = useCart((s) => s.items);
-  const subtotal = useCart((s) => s.subtotal());
+  
   const setQuantity = useCart((s) => s.setQuantity);
   const remove = useCart((s) => s.remove);
 
