@@ -24,7 +24,7 @@ export function ProductCard({ product }: { product: Product }) {
         />
         <button
           onClick={onAdd}
-          className="absolute inset-x-4 bottom-4 translate-y-2 rounded-sm bg-primary py-3 text-xs uppercase tracking-[0.2em] text-primary-foreground opacity-0 shadow-elegant transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100"
+          className="absolute inset-x-4 bottom-4 rounded-sm bg-primary py-3 text-xs uppercase tracking-[0.2em] text-primary-foreground shadow-elegant"
         >
           Add to bag
         </button>
