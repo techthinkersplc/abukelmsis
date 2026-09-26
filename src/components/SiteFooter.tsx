@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Facebook, Instagram, MapPin } from "lucide-react";
 import logo from "@/assets/logo.jpg";
+import ttLogo from "@/images/TTlogo.png";
 
 // Define the interface for SocialLink props to fix the 'unknown' error
 interface SocialLinkProps {
@@ -100,6 +101,30 @@ export function SiteFooter() {
               Quality Gifts
             </span>
           </div>
+        </div>
+      </div>
+
+      {/* Powered-by bar */}
+      <div className="mt-12 border-t border-border/40 bg-card px-6 py-2">
+        <div className="mx-auto flex max-w-7xl items-center justify-center">
+          <a
+            href="https://Techthinkerss.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Visit TechThinker Solution website"
+            className="group flex cursor-pointer items-center gap-1.5 text-xs text-muted-foreground transition-colors duration-200 ease-in-out hover:text-primary"
+          >
+            Powered by
+            <img
+              src={ttLogo}
+              alt="TechThinkers Logo"
+              className="h-6 w-auto object-contain transition-transform duration-200 ease-in-out group-hover:translate-x-1 group-hover:scale-105"
+            />
+            <span className="relative font-semibold text-foreground transition-colors duration-200 ease-in-out group-hover:text-primary">
+              TechThinker
+              <span className="absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-primary transition-transform duration-200 ease-in-out group-hover:scale-x-100" />
+            </span>
+          </a>
         </div>
       </div>
     </footer>
