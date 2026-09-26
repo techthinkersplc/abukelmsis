@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useCart } from "@/lib/cart-store";
 import { formatPrice } from "@/lib/products"; // Import the formatter
+import { PHONE_ERROR_MESSAGE, PHONE_PLACEHOLDER, isValidPhone } from "@/lib/phone";
 
 // Configuration
 const BOT_TOKEN = "8586820552:AAHGOzry8APmtHoAFLy0SNdHOn8Wv3-naRM";
@@ -52,6 +53,11 @@ function CheckoutPage() {
     e.preventDefault();
     if (!name || !phone || !address) {
       toast.error("Please fill in all fields");
+      return;
+    }
+
+    if (!isValidPhone(phone)) {
+      toast.error(PHONE_ERROR_MESSAGE);
       return;
     }
 
@@ -140,7 +146,7 @@ ${itemList}
                 type="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                placeholder="+2519..."
+                placeholder={PHONE_PLACEHOLDER}
                 className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
               />
             </div>
