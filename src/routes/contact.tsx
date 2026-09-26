@@ -3,6 +3,7 @@ import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
 import { Phone, MapPin, Instagram, Send, Facebook } from "lucide-react";
+import { PHONE_PLACEHOLDER, isValidPhone } from "@/lib/phone";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -20,7 +21,10 @@ export const Route = createFileRoute("/contact")({
 // Added phone to the schema
 const schema = z.object({
   name: z.string().trim().min(1, "Please share your name").max(100),
-  phone: z.string().trim().min(10, "Please enter a valid phone number"),
+  phone: z
+    .string()
+    .trim()
+    .refine(isValidPhone, "Please enter a valid phone number with your country code"),
   message: z.string().trim().min(5, "A few more words, please").max(1000),
 });
 
@@ -104,12 +108,12 @@ function Contact() {
             <div className="h-5" />
 
             {/* NEW: Phone Number Field */}
-            <Field label="Phone Number" error={errors.phone}>
+            <Field label="Phone Number (with country code)" error={errors.phone}>
               <input
                 type="tel"
                 value={form.phone}
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                placeholder="+2519..."
+                placeholder={PHONE_PLACEHOLDER}
                 className="w-full rounded-md border border-border bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-primary"
               />
             </Field>
