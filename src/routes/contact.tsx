@@ -5,6 +5,10 @@ import { toast } from "sonner";
 import { Phone, MapPin, Instagram, Send, Facebook } from "lucide-react";
 import { PHONE_ERROR_MESSAGE, PHONE_PLACEHOLDER, isValidPhone } from "@/lib/phone";
 
+function escapeHtml(value: string) {
+  return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
@@ -30,9 +34,6 @@ function Contact() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSending, setIsSending] = useState(false);
 
-  const BOT_TOKEN = "8586820552:AAHGOzry8APmtHoAFLy0SNdHOn8Wv3-naRM";
-  const CHAT_ID = "1951892460";
-
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = schema.safeParse(form);
@@ -49,32 +50,43 @@ function Contact() {
     setIsSending(true);
     setErrors({});
 
-    // Updated template with Phone
-    const telegramMessage = `
-🔔 *New Contact Form Submission*
-👤 *Name:* ${form.name}
-📞 *Phone:* ${form.phone}
-📝 *Message:* ${form.message}
-    `;
+    const botToken = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
+    const chatId = import.meta.env.VITE_TELEGRAM_CHAT_ID;
+
+    if (!botToken || !chatId) {
+      toast.error("Messaging is not configured yet. Please try again later.");
+      setIsSending(false);
+      return;
+    }
+
+    const telegramMessage = [
+      "<b>🔔 New Message from the Website</b>",
+      "",
+      `<b>👤 Name</b>\n${escapeHtml(result.data.name)}`,
+      `<b>📞 Phone</b>\n${escapeHtml(result.data.phone)}`,
+      `<b>💬 Message</b>\n${escapeHtml(result.data.message)}`,
+    ].join("\n");
 
     try {
-      const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+      const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          chat_id: CHAT_ID,
+          chat_id: chatId,
           text: telegramMessage,
-          parse_mode: "Markdown",
+          parse_mode: "HTML",
         }),
       });
 
-      if (response.ok) {
-        toast.success("Message sent to our Telegram!");
-        setForm({ name: "", phone: "", message: "" });
-      } else {
-        throw new Error();
+      if (!response.ok) {
+        const detail = await response.json().catch(() => null);
+        throw new Error(detail?.description ?? "Telegram rejected the message");
       }
+
+      toast.success("Message sent to our Telegram!");
+      setForm({ name: "", phone: "", message: "" });
     } catch (error) {
+      console.error("Telegram send failed:", error);
       toast.error("Failed to send. Please try again.");
     } finally {
       setIsSending(false);

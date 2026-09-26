@@ -6,9 +6,9 @@ import { useCart } from "@/lib/cart-store";
 import { formatPrice } from "@/lib/products"; // Import the formatter
 import { PHONE_ERROR_MESSAGE, PHONE_PLACEHOLDER, isValidPhone } from "@/lib/phone";
 
-// Configuration
-const BOT_TOKEN = "8586820552:AAHGOzry8APmtHoAFLy0SNdHOn8Wv3-naRM";
-const CHAT_ID = "1951892460";
+function escapeHtml(value: string) {
+  return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({
@@ -63,54 +63,57 @@ function CheckoutPage() {
 
     setProcessing(true);
 
-    // Added price per line item in Telegram
+    const botToken = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
+    const chatId = import.meta.env.VITE_TELEGRAM_CHAT_ID;
+
+    if (!botToken || !chatId) {
+      toast.error("Ordering is not configured yet. Please try again later.");
+      setProcessing(false);
+      return;
+    }
+
     const itemList = items
       .map(
         (item) =>
-          `▪️ ${item.name} (x${item.quantity}) - ${formatPrice(item.price * item.quantity)}`,
+          `▪️ ${escapeHtml(item.name)} (x${item.quantity}) — ${formatPrice(item.price * item.quantity)}`,
       )
       .join("\n");
 
-    const telegramMessage = `
-🚀 **New Order: Abuqelemsis Gifts**
-----------------------------
-👤 **Customer:** ${name}
-📞 **Phone:** ${phone}
-📍 **Address:** ${address}
-
-📦 **Items:**
-${itemList}
-
-💰 **Total Amount:** ${formatPrice(totalAmount)}
-----------------------------
-    `;
+    const telegramMessage = [
+      "<b>🛍 New Order — አቡቀለምሲስ</b>",
+      "",
+      `<b>👤 Customer</b>\n${escapeHtml(name)}`,
+      `<b>📞 Phone</b>\n${escapeHtml(phone)}`,
+      `<b>📍 Address</b>\n${escapeHtml(address)}`,
+      "",
+      "<b>📦 Items</b>",
+      itemList,
+      "",
+      `<b>💰 Total Amount</b>\n${formatPrice(totalAmount)}`,
+    ].join("\n");
 
     try {
-      const response = await fetch(
-        `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            chat_id: CHAT_ID,
-            text: telegramMessage,
-            parse_mode: "Markdown",
-          }),
-        },
-      );
-
-      const result = await response.json();
+      const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: telegramMessage,
+          parse_mode: "HTML",
+        }),
+      });
 
       if (!response.ok) {
-        throw new Error(result.description || "Failed to send");
+        const detail = await response.json().catch(() => null);
+        throw new Error(detail?.description ?? "Telegram rejected the message");
       }
 
       clear();
-      toast.success("Order sent to @AbuqelemsisGifts_bot!");
+      toast.success("Order sent successfully!");
       navigate({ to: "/checkout/success" });
-    } catch (error: any) {
-      console.error("Telegram Error:", error);
-      toast.error(`Error: ${error.message}`);
+    } catch (error) {
+      console.error("Telegram send failed:", error);
+      toast.error("Failed to send. Please try again.");
     } finally {
       setProcessing(false);
     }
