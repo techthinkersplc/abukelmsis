@@ -13,7 +13,7 @@ interface SocialLinkProps {
 
 export function SiteFooter() {
   return (
-    <footer className="mt-32 border-t border-border/40 bg-secondary/5 pt-20 pb-12 antialiased">
+    <footer className="mt-32 border-t border-border/40 bg-secondary/5 pt-20 antialiased">
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid grid-cols-1 gap-16 lg:grid-cols-12 lg:gap-8">
           {/* Brand & Social Section */}
