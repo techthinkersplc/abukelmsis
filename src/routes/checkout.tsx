@@ -3,7 +3,6 @@ import { ArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useCart } from "@/lib/cart-store";
-import { PHONE_PLACEHOLDER, isValidPhone, normalizePhone } from "@/lib/phone";
 import { formatPrice } from "@/lib/products"; // Import the formatter
 
 // Configuration
@@ -56,11 +55,6 @@ function CheckoutPage() {
       return;
     }
 
-    if (!isValidPhone(phone)) {
-      toast.error("Please enter a valid phone number with your country code");
-      return;
-    }
-
     setProcessing(true);
 
     // Added price per line item in Telegram
@@ -75,7 +69,7 @@ function CheckoutPage() {
 🚀 **New Order: Abuqelemsis Gifts**
 ----------------------------
 👤 **Customer:** ${name}
-📞 **Phone:** ${normalizePhone(phone)}
+📞 **Phone:** ${phone}
 📍 **Address:** ${address}
 
 📦 **Items:**
@@ -141,14 +135,12 @@ ${itemList}
               />
             </div>
             <div>
-              <label className="text-sm font-medium text-foreground">
-                Phone Number (with country code)
-              </label>
+              <label className="text-sm font-medium text-foreground">Phone Number</label>
               <input
                 type="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                placeholder={PHONE_PLACEHOLDER}
+                placeholder="+2519..."
                 className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
               />
             </div>
