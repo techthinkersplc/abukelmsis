@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
 import { Phone, MapPin, Instagram, Send, Facebook } from "lucide-react";
 import { PHONE_ERROR_MESSAGE, PHONE_PLACEHOLDER, isValidPhone } from "@/lib/phone";
+import { logTelegramFailure, sendTelegramMessage, verifyTelegramCredentials } from "@/lib/telegram";
 
 function escapeHtml(value: string) {
   return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -34,6 +35,10 @@ function Contact() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSending, setIsSending] = useState(false);
 
+  useEffect(() => {
+    void verifyTelegramCredentials();
+  }, []);
+
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = schema.safeParse(form);
@@ -50,15 +55,6 @@ function Contact() {
     setIsSending(true);
     setErrors({});
 
-    const botToken = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
-    const chatId = import.meta.env.VITE_TELEGRAM_CHAT_ID;
-
-    if (!botToken || !chatId) {
-      toast.error("Messaging is not configured yet. Please try again later.");
-      setIsSending(false);
-      return;
-    }
-
     const telegramMessage = [
       "<b>🔔 New Message from the Website</b>",
       "",
@@ -67,30 +63,21 @@ function Contact() {
       `<b>💬 Message</b>\n${escapeHtml(result.data.message)}`,
     ].join("\n");
 
-    try {
-      const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: chatId,
-          text: telegramMessage,
-          parse_mode: "HTML",
-        }),
-      });
+    const sent = await sendTelegramMessage(
+      telegramMessage,
+      "Failed to send your message. Please try again.",
+    );
 
-      if (!response.ok) {
-        const detail = await response.json().catch(() => null);
-        throw new Error(detail?.description ?? "Telegram rejected the message");
-      }
-
-      toast.success("Message sent to our Telegram!");
-      setForm({ name: "", phone: "", message: "" });
-    } catch (error) {
-      console.error("Telegram send failed:", error);
-      toast.error("Failed to send. Please try again.");
-    } finally {
+    if (!sent.ok) {
+      logTelegramFailure("contact", sent.detail);
+      toast.error(sent.message);
       setIsSending(false);
+      return;
     }
+
+    toast.success("Message sent to our Telegram!");
+    setForm({ name: "", phone: "", message: "" });
+    setIsSending(false);
   };
 
   return (

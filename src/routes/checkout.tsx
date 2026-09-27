@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { useCart } from "@/lib/cart-store";
 import { formatPrice } from "@/lib/products"; // Import the formatter
 import { PHONE_ERROR_MESSAGE, PHONE_PLACEHOLDER, isValidPhone } from "@/lib/phone";
+import { logTelegramFailure, sendTelegramMessage, verifyTelegramCredentials } from "@/lib/telegram";
 
 function escapeHtml(value: string) {
   return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -36,6 +37,10 @@ function CheckoutPage() {
 
   useEffect(() => setHydrated(true), []);
 
+  useEffect(() => {
+    void verifyTelegramCredentials();
+  }, []);
+
   if (!hydrated) return <div className="mx-auto max-w-3xl px-6 py-16" />;
 
   if (items.length === 0) {
@@ -63,15 +68,6 @@ function CheckoutPage() {
 
     setProcessing(true);
 
-    const botToken = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
-    const chatId = import.meta.env.VITE_TELEGRAM_CHAT_ID;
-
-    if (!botToken || !chatId) {
-      toast.error("Ordering is not configured yet. Please try again later.");
-      setProcessing(false);
-      return;
-    }
-
     const itemList = items
       .map(
         (item) =>
@@ -92,31 +88,22 @@ function CheckoutPage() {
       `<b>💰 Total Amount</b>\n${formatPrice(totalAmount)}`,
     ].join("\n");
 
-    try {
-      const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: chatId,
-          text: telegramMessage,
-          parse_mode: "HTML",
-        }),
-      });
+    const result = await sendTelegramMessage(
+      telegramMessage,
+      "Failed to send your order. Please try again.",
+    );
 
-      if (!response.ok) {
-        const detail = await response.json().catch(() => null);
-        throw new Error(detail?.description ?? "Telegram rejected the message");
-      }
-
-      clear();
-      toast.success("Order sent successfully!");
-      navigate({ to: "/checkout/success" });
-    } catch (error) {
-      console.error("Telegram send failed:", error);
-      toast.error("Failed to send. Please try again.");
-    } finally {
+    if (!result.ok) {
+      logTelegramFailure("checkout", result.detail);
+      toast.error(result.message);
       setProcessing(false);
+      return;
     }
+
+    clear();
+    toast.success("Order sent successfully!");
+    navigate({ to: "/checkout/success" });
+    setProcessing(false);
   };
 
   return (
